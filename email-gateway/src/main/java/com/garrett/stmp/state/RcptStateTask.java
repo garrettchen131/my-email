@@ -12,10 +12,19 @@ public class RcptStateTask implements StateTask {
         String[] args = line.trim().split(" ", 2);
         if (StmpState.RCPT.getCommands().stream().anyMatch(cmd -> cmd.equalsIgnoreCase(args[0]))) {
             handler.writeToClient(StmpState.RCPT.getCode());
-            handler.setTask(new DataStateTask());
         } else {
             handler.writeToClient(StmpState.ERROR.getCode());
             handler.setTask(null);
         }
+    }
+
+    @Override
+    public boolean hasNext() {
+        return true;
+    }
+
+    @Override
+    public StateTask next() {
+        return new DataStateTask();
     }
 }

@@ -8,6 +8,15 @@ public class InitStateTask implements StateTask {
     @Override
     public void handle(StmpHandler handler) {
         handler.writeToClient(StmpState.INIT.getCode());
-        handler.setTask(new HeloStateTask());
+    }
+
+    @Override
+    public boolean hasNext() {
+        return true;
+    }
+
+    @Override
+    public StateTask next() {
+        return new HeloStateTask();
     }
 }

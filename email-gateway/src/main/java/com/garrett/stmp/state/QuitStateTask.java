@@ -12,10 +12,19 @@ public class QuitStateTask implements StateTask {
         String[] args = line.trim().split(" ", 2);
         if (StmpState.QUIT.getCommands().stream().anyMatch(cmd -> cmd.equalsIgnoreCase(args[0]))) {
             handler.writeToClient(StmpState.QUIT.getCode());
-            handler.setTask(null);
         } else {
             handler.writeToClient(StmpState.ERROR.getCode());
             handler.setTask(null);
         }
+    }
+
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public StateTask next() {
+        return null;
     }
 }

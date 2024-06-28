@@ -32,10 +32,11 @@ public class StmpHandler implements Runnable {
     public void run() {
 
         while (true) {
-            if (task == null) {
+            task.handle(this);
+            if (!task.hasNext()) {
                 break;
             }
-            task.handle(this);
+            task = task.next();
         }
         if (socket != null && !socket.isClosed()) {
             try {
@@ -45,46 +46,6 @@ public class StmpHandler implements Runnable {
             }
         }
 
-//        System.out.println("start handle");
-//        try {
-//            output.println("220 Welcome to my-mail smtp Server");
-//            output.flush();
-//            System.out.println(input.readLine());
-//            output.println("250");
-//            output.flush();
-//            System.out.println(input.readLine());
-//            output.println("250");
-//            output.flush();
-//            System.out.println(input.readLine());
-//            output.println("250");
-//            output.flush();
-//            System.out.println(input.readLine());
-//            output.println("354");
-//            output.flush();
-//            while (true) {
-//                String line = input.readLine();
-//                System.out.println(line);
-//                if (".".equals(line)) {
-//                    output.println("250");
-//                    output.flush();
-//                    break;
-//                }
-//            }
-//            System.out.println(input.readLine());
-//            output.println("221");
-//            output.flush();
-//            System.out.println("close socket1");
-//            socket.close();
-//            input.close();
-//            output.close();
-//            System.out.println("close socket2");
-//            System.out.println(socket.isClosed());
-//            System.out.println(socket.isConnected());
-//            System.out.println(socket.isInputShutdown());
-//            System.out.println(socket.isOutputShutdown());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     public void writeToClient(String outStr) {
@@ -105,7 +66,6 @@ public class StmpHandler implements Runnable {
 
 
     public void closeConnection() {
-        //close the client
         if (socket != null) {
             try {
 //                this.writeToClient("221 Bye");
