@@ -3,6 +3,7 @@ package com.garrett.stmp.state;
 import com.garrett.stmp.SmtpHandler;
 import com.garrett.util.PatternUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
 public class RcptStateTask implements StateTask {
@@ -12,18 +13,23 @@ public class RcptStateTask implements StateTask {
             log.error("rcpt args check error: {}", args);
             throw new IllegalArgumentException("rcpt args check error");
         }
-        handler.getBuilder().rcpt(args);
+        handler.getSmtpContext().setRcpt(args);
+        handler.getSmtpContext().setToEmail(getToEmail(args));
         handler.writeToClient(SmtpState.RCPT.getCode());
         return true;
     }
 
+
     @Override
     public boolean checkArgument(String arg) {
-        if (!PatternUtils.isMailFrom(arg)) {
+        if (StringUtils.isBlank(arg) || !arg.substring(0, 3).equalsIgnoreCase("TO:")) {
             return false;
         }
-        var args = arg.split(":", 2);
-        return "to".equalsIgnoreCase(args[0]);
+        return PatternUtils.isMailFrom(arg.substring(3).trim());
+    }
+
+    private String getToEmail(String arg) {
+        return PatternUtils.getEmail(arg);
     }
 
 }

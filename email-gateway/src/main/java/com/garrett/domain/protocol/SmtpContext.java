@@ -1,52 +1,57 @@
 package com.garrett.domain.protocol;
 
 
-public record SmtpContext(String helo, String mail, String rcpt, String data, String content, String quit) {
+import lombok.Getter;
+import lombok.Setter;
 
-    public static SmtpProtocolBuilder builder() {
-        return new SmtpProtocolBuilder();
+@Setter
+@Getter
+public class SmtpContext {
+
+    private StringBuilder protoDataBuilder = new StringBuilder();
+    private String helo;
+    private String ehlo;
+    private String mail;
+    private String rcpt;
+    private String data;
+    private String content;
+    private String quit;
+
+    private String protoData;
+    private String toString;
+    private String fromEmail;
+    private String toEmail;
+
+    public SmtpContext() {
     }
 
-    public static class SmtpProtocolBuilder {
-        private String helo;
-        private String mail;
-        private String rcpt;
-        private String data;
-        private String content;
-        private String quit;
+    public void appendProtoMsg(String msg) {
+        protoDataBuilder.append(msg).append("\n");
+    }
 
-        public SmtpProtocolBuilder helo(String helo) {
-            this.helo = helo;
-            return this;
-        }
+    public void build() {
+        this.protoData = protoDataBuilder.toString();
+        this.toString = "HELO;" + helo + '\n' +
+                        "EHLO;" + mail + '\n' +
+                        "MAIL;" + mail + '\n' +
+                        "RCPT;" + rcpt + '\n' +
+                        "DATA;" + data + '\n' +
+                        "CONTENT;" + content + '\n' +
+                        "QUIT;" + quit;
 
-        public SmtpProtocolBuilder mail(String mail) {
-            this.mail = mail;
-            return this;
-        }
+    }
 
-        public SmtpProtocolBuilder rcpt(String rcpt) {
-            this.rcpt = rcpt;
-            return this;
+    @Override
+    public String toString() {
+        if (toString != null) {
+            return toString;
         }
-
-        public SmtpProtocolBuilder data(String data) {
-            this.data = data;
-            return this;
-        }
-
-        public SmtpProtocolBuilder content(String content) {
-            this.content = content;
-            return this;
-        }
-
-        public SmtpProtocolBuilder quit(String quit) {
-            this.quit = quit;
-            return this;
-        }
-
-        public SmtpContext build() {
-            return new SmtpContext(helo, mail, rcpt, data, content, quit);
-        }
+        return  "HELO;" + helo + '\n' +
+                "EHLO;" + mail + '\n' +
+                "MAIL;" + mail + '\n' +
+                "RCPT;" + rcpt + '\n' +
+                "DATA;" + data + '\n' +
+                "CONTENT;" + content + '\n' +
+                "QUIT;" + quit;
     }
 }

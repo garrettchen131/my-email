@@ -1,5 +1,7 @@
 FROM openjdk:22
 
+
+
 VOLUME /tmp/tomcat
 
 EXPOSE 25

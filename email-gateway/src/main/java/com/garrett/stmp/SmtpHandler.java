@@ -2,8 +2,8 @@ package com.garrett.stmp;
 
 import com.garrett.domain.protocol.SmtpContext;
 import com.garrett.stmp.state.SmtpState;
-import com.garrett.stmp.state.StateTask;
 import com.garrett.holder.StateTaskHolder;
+import com.garrett.util.CosUtils;
 import com.garrett.util.ParseUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +19,12 @@ public class SmtpHandler implements Runnable {
 
     private Socket socket;
 
-    private BufferedReader input = null;
+    private final BufferedReader input;
 
-    private PrintWriter output = null;
-
-    private Class<? extends StateTask> taskName;
+    private final PrintWriter output;
 
     @Getter
-    private final SmtpContext.SmtpProtocolBuilder builder = SmtpContext.builder();
+    private final SmtpContext smtpContext = new SmtpContext();
 
     public SmtpHandler(Socket socket) throws IOException {
         this.socket = socket;
@@ -44,6 +42,7 @@ public class SmtpHandler implements Runnable {
                 return;
             }
             log.info("line: {}", line);
+            smtpContext.appendProtoMsg(line);
             var pair = ParseUtils.parseLine(line.trim());
             if (pair.getKey() == null) {
                 log.error("cmd is null");
@@ -61,9 +60,11 @@ public class SmtpHandler implements Runnable {
                 break;
             }
         }
-        log.info("stmpHandler ends, smtpProtocol: {}", builder.build());
+        smtpContext.build();
+        log.info("stmpHandler ends, smtpContext toString:\n{}", smtpContext);
+        log.info("stmpHandler ends, smtpContext protoData:\n{}", smtpContext.getProtoData());
         closeConnection();
-
+        CosUtils.save(smtpContext.toString());
     }
 
     public void writeToClient(String outStr) {

@@ -11,7 +11,7 @@ public class DataStateTask implements StateTask {
         if (!checkArgument(args)) {
             log.warn("data args is blank");
         }
-        handler.getBuilder().data(args);
+        handler.getSmtpContext().setData(args);
         handler.writeToClient(SmtpState.DATA.getCode());
 
         var builder = new StringBuilder();
@@ -27,7 +27,7 @@ public class DataStateTask implements StateTask {
             builder.append(arg).append('\n');
         }
         var rawEmailData = builder.toString();
-        handler.getBuilder().content(rawEmailData);
+        handler.getSmtpContext().setContent(rawEmailData);
         log.info("content : {}", rawEmailData);
         handler.writeToClient(SmtpState.END.getCode());
         return true;

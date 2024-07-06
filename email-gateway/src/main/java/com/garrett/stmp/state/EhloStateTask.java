@@ -5,13 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
-public class HeloStateTask implements StateTask {
+public class EhloStateTask implements StateTask {
 
     @Override
     public boolean handle(SmtpHandler handler, String args) {
-        log.info("helo args: {}", args);
+        log.info("ehlo args: {}", args);
         if (!checkArgument(args)) {
-            log.warn("helo args is blank");
+            log.warn("ehlo args is blank");
         }
         handler.getSmtpContext().setHelo(args);
         handler.writeToClient(SmtpState.HELO.getCode());

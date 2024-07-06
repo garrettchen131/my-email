@@ -11,6 +11,7 @@ public class QuitStateTask implements StateTask {
         if (!checkArgument(args)) {
             log.warn("quit args is blank");
         }
+        handler.getSmtpContext().setQuit(args);
         handler.writeToClient(SmtpState.QUIT.getCode());
         return false;
     }

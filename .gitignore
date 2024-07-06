@@ -1,4 +1,6 @@
 target/
+log2/
+./.idea
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

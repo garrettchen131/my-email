@@ -12,7 +12,7 @@ public class StateTaskHolder {
     static {
         STATE_TASK_MAP.put(SmtpState.INIT, new InitStateTask());
         STATE_TASK_MAP.put(SmtpState.HELO, new HeloStateTask());
-        STATE_TASK_MAP.put(SmtpState.EHLO, new HeloStateTask());
+        STATE_TASK_MAP.put(SmtpState.EHLO, new EhloStateTask());
         STATE_TASK_MAP.put(SmtpState.MAIL, new MailStateTask());
         STATE_TASK_MAP.put(SmtpState.RCPT, new RcptStateTask());
         STATE_TASK_MAP.put(SmtpState.DATA, new DataStateTask());
