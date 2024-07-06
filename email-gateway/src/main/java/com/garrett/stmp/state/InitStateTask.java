@@ -1,22 +1,21 @@
 package com.garrett.stmp.state;
 
-import com.garrett.stmp.StmpHandler;
+import com.garrett.stmp.SmtpHandler;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class InitStateTask implements StateTask {
 
-
     @Override
-    public void handle(StmpHandler handler) {
-        handler.writeToClient(StmpState.INIT.getCode());
-    }
-
-    @Override
-    public boolean hasNext() {
+    public boolean handle(SmtpHandler handler, String args) {
+        log.info("init handler");
+        handler.writeToClient(SmtpState.INIT.getCode());
         return true;
     }
 
     @Override
-    public StateTask next() {
-        return new HeloStateTask();
+    public boolean checkArgument(String args) {
+        throw new IllegalArgumentException("InitStateTask no such method");
     }
+
 }

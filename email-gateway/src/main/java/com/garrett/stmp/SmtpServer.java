@@ -1,13 +1,10 @@
 package com.garrett.stmp;
 
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.concurrent.Executor;
 
-public class StmpServer implements Runnable {
+public class SmtpServer implements Runnable {
     private int port = 25;
     private ServerSocket server = null;
 
@@ -24,9 +21,9 @@ public class StmpServer implements Runnable {
     public void start() throws IOException {
         server = new ServerSocket(port);
         while (true) {
-            Socket socket = server.accept();
+            var socket = server.accept();
             System.out.println("accept connection");
-            Thread.startVirtualThread(new StmpHandler(socket));
+            Thread.startVirtualThread(new SmtpHandler(socket));
         }
     }
 

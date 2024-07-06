@@ -1,34 +1,26 @@
 package com.garrett.stmp.state;
 
-import com.garrett.stmp.StmpHandler;
+import com.garrett.stmp.SmtpHandler;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
-
+@Slf4j
 public class HeloStateTask implements StateTask {
 
-
     @Override
-    public void handle(StmpHandler handler) {
-        String line = handler.readFromClient();
-        if (line == null) {
-            return;
+    public boolean handle(SmtpHandler handler, String args) {
+        log.info("helo/ehlo args: {}", args);
+        if (!checkArgument(args)) {
+            log.warn("helo args is blank");
         }
-        String[] args = line.trim().split(" ", 2);
-        if (StmpState.HELO.getCommands().stream().anyMatch(cmd -> cmd.equalsIgnoreCase(args[0]))) {
-            handler.writeToClient(StmpState.HELO.getCode());
-        } else {
-            handler.writeToClient(StmpState.ERROR.getCode());
-            handler.setTask(null);
-        }
-
-    }
-
-    @Override
-    public boolean hasNext() {
+        handler.getBuilder().helo(args);
+        handler.writeToClient(SmtpState.HELO.getCode());
         return true;
     }
 
     @Override
-    public StateTask next() {
-        return new MailStateTask();
+    public boolean checkArgument(String args) {
+        return StringUtils.isNotBlank(args);
     }
+
 }

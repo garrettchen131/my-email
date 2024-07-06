@@ -1,12 +1,12 @@
 package com.garrett.stmp.state;
 
 
-import com.garrett.stmp.StmpHandler;
+import com.garrett.stmp.SmtpHandler;
 
-import java.util.Iterator;
 
-public interface StateTask extends Iterator<StateTask> {
+public interface StateTask {
 
-    void handle(StmpHandler handler);
+    boolean handle(SmtpHandler handler, String args);
 
+    boolean checkArgument(String args);
 }

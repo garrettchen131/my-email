@@ -1,30 +1,23 @@
 package com.garrett.stmp.state;
 
-import com.garrett.stmp.StmpHandler;
+import com.garrett.stmp.SmtpHandler;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
+@Slf4j
 public class QuitStateTask implements StateTask {
     @Override
-    public void handle(StmpHandler handler) {
-        String line = handler.readFromClient();
-        if (line == null) {
-            return;
+    public boolean handle(SmtpHandler handler, String args) {
+        if (!checkArgument(args)) {
+            log.warn("quit args is blank");
         }
-        String[] args = line.trim().split(" ", 2);
-        if (StmpState.QUIT.getCommands().stream().anyMatch(cmd -> cmd.equalsIgnoreCase(args[0]))) {
-            handler.writeToClient(StmpState.QUIT.getCode());
-        } else {
-            handler.writeToClient(StmpState.ERROR.getCode());
-            handler.setTask(null);
-        }
-    }
-
-    @Override
-    public boolean hasNext() {
+        handler.writeToClient(SmtpState.QUIT.getCode());
         return false;
     }
 
     @Override
-    public StateTask next() {
-        return null;
+    public boolean checkArgument(String args) {
+        return StringUtils.isNotBlank(args);
     }
+
 }

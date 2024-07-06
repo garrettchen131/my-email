@@ -1,30 +1,29 @@
 package com.garrett.stmp.state;
 
-import com.garrett.stmp.StmpHandler;
+import com.garrett.stmp.SmtpHandler;
+import com.garrett.util.PatternUtils;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RcptStateTask implements StateTask {
     @Override
-    public void handle(StmpHandler handler) {
-        String line = handler.readFromClient();
-        if (line == null) {
-            return;
+    public boolean handle(SmtpHandler handler, String args) {
+        if (!checkArgument(args)) {
+            log.error("rcpt args check error: {}", args);
+            throw new IllegalArgumentException("rcpt args check error");
         }
-        String[] args = line.trim().split(" ", 2);
-        if (StmpState.RCPT.getCommands().stream().anyMatch(cmd -> cmd.equalsIgnoreCase(args[0]))) {
-            handler.writeToClient(StmpState.RCPT.getCode());
-        } else {
-            handler.writeToClient(StmpState.ERROR.getCode());
-            handler.setTask(null);
-        }
-    }
-
-    @Override
-    public boolean hasNext() {
+        handler.getBuilder().rcpt(args);
+        handler.writeToClient(SmtpState.RCPT.getCode());
         return true;
     }
 
     @Override
-    public StateTask next() {
-        return new DataStateTask();
+    public boolean checkArgument(String arg) {
+        if (!PatternUtils.isMailFrom(arg)) {
+            return false;
+        }
+        var args = arg.split(":", 2);
+        return "to".equalsIgnoreCase(args[0]);
     }
+
 }
