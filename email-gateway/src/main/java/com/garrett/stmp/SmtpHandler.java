@@ -64,7 +64,7 @@ public class SmtpHandler implements Runnable {
         log.info("stmpHandler ends, smtpContext toString:\n{}", smtpContext);
         log.info("stmpHandler ends, smtpContext protoData:\n{}", smtpContext.getProtoData());
         closeConnection();
-        CosUtils.save(smtpContext.toString());
+//        CosUtils.save(smtpContext.toString());
     }
 
     public void writeToClient(String outStr) {

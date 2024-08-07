@@ -1,7 +1,7 @@
 # 邮件服务器的SMTP地址，可选，默认为smtp.<发件人邮箱后缀>
 # host = 119.91.252.56
-host = stmp.garrettzxc.com
-# host = 127.0.0.1
+# host = stmp.garrettzxc.com
+host = 127.0.0.1
 # 邮件服务器的SMTP端口，可选，默认25
 # port = 25
 # 发件人（必须正确，否则发送失败）

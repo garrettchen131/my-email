@@ -12,6 +12,7 @@
   <modules>
     <module>email-gateway</module>
     <module>email-test</module>
+    <module>email-gateway-new</module>
   </modules>
 
   <properties>
@@ -22,11 +23,11 @@
 
   <dependencyManagement>
     <dependencies>
+
       <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>3.8.1</version>
-        <scope>test</scope>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.34</version>
       </dependency>
 
       <dependency>
@@ -51,12 +52,13 @@
         <version>2.23.1</version>
       </dependency>
 
+
       <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>1.18.34</version>
-        <scope>provided</scope>
+        <groupId>commons-net</groupId>
+        <artifactId>commons-net</artifactId>
+        <version>3.11.0</version>
       </dependency>
+
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
@@ -66,18 +68,21 @@
       <dependency>
         <groupId>cn.hutool</groupId>
         <artifactId>hutool-all</artifactId>
-        <version>5.8.28</version>
+        <version>5.8.29</version>
       </dependency>
+
       <dependency>
-        <groupId>com.alibaba.fastjson2</groupId>
-        <artifactId>fastjson2</artifactId>
-        <version>2.0.51</version>
+        <groupId>com.qcloud</groupId>
+        <artifactId>cos_api</artifactId>
+        <version>5.6.221</version>
       </dependency>
+
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>33.0.0-jre</version>
+        <version>33.2.1-jre</version>
       </dependency>
+
       <dependency>
         <groupId>com.sun.mail</groupId>
         <artifactId>javax.mail</artifactId>
@@ -85,10 +90,34 @@
       </dependency>
 
       <dependency>
-        <groupId>com.qcloud</groupId>
-        <artifactId>cos_api</artifactId>
-        <version>5.6.219</version>
+        <groupId>com.alibaba.fastjson2</groupId>
+        <artifactId>fastjson2</artifactId>
+        <version>2.0.52</version>
       </dependency>
+
+      <dependency>
+        <groupId>org.subethamail</groupId>
+        <artifactId>subethasmtp</artifactId>
+        <version>3.1.7</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+        <version>4.12.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-core</artifactId>
+        <version>4.5.9</version>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-web</artifactId>
+        <version>4.5.9</version>
+      </dependency>
+
 
     </dependencies>
   </dependencyManagement>
@@ -103,7 +132,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.garrett.App</mainClass>
+              <mainClass>com.garrett.GatewayNewApp</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
